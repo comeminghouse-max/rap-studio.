@@ -3,243 +3,184 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rap Studio Pro v48.0 - Stealth Input</title>
-
+    <title>Rap Studio Pro v51.1 - Cloud Master</title>
     <style>
-        :root { 
-            --bg-beige: #e8e2d2; 
-            --light-reflect: #ffffff;
-            --dark-shadow: #c5beb0;
-            --text-main: #5d574a;
-            --accent-warm: #c18c5d;
-            --border-soft: rgba(255, 255, 255, 0.5);
-        }
-
-        body { 
-            font-family: 'Times New Roman', Times, serif; 
-            background-color: var(--bg-beige); color: var(--text-main);
-            margin: 0; padding: 0; height: 100vh; display: flex; overflow: hidden; 
-        }
-
-        /* Sidebar Left - Baseline */
+        :root { --bg-beige: #e8e2d2; --light-reflect: #ffffff; --dark-shadow: #c5beb0; --text-main: #5d574a; --accent-warm: #c18c5d; --border-soft: rgba(255, 255, 255, 0.5); }
+        body { font-family: 'Times New Roman', Times, serif; background-color: var(--bg-beige); color: var(--text-main); margin: 0; padding: 0; height: 100vh; display: flex; overflow: hidden; }
         .sidebar-left { width: 110px; background: var(--bg-beige); display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 40px 10px; border-right: 1px solid var(--border-soft); z-index: 1000; }
-        .tab-btn { width: 80px; background: var(--bg-beige); color: var(--text-main); border: none; padding: 12px 5px; cursor: pointer; font-family: 'Times New Roman', serif; font-weight: bold; font-size: 13px; letter-spacing: 1px; transition: all 0.3s ease; border-radius: 12px; box-shadow: 6px 6px 12px var(--dark-shadow), -6px -6px 12px var(--light-reflect); opacity: 0.6; }
-        .tab-btn.active { opacity: 1; color: var(--accent-warm); box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); transform: scale(0.98); }
+        .tab-btn { width: 80px; background: var(--bg-beige); color: var(--text-main); border: none; padding: 12px 5px; cursor: pointer; font-family: 'Times New Roman', serif; font-weight: bold; border-radius: 12px; box-shadow: 6px 6px 12px var(--dark-shadow), -6px -6px 12px var(--light-reflect); opacity: 0.6; }
+        .tab-btn.active { opacity: 1; color: var(--accent-warm); box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
+        .account-section { margin-top: auto; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
+        .login-btn { background: var(--bg-beige); color: #4285F4; border: none; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 10px var(--dark-shadow), -4px -4px 10px var(--light-reflect); }
+        .login-btn.online { color: #34A853; box-shadow: inset 2px 2px 5px var(--dark-shadow); }
+        .user-status { font-size: 10px; font-weight: bold; text-transform: uppercase; opacity: 0.6; }
 
-        /* Main Container */
-        .main-container { flex: 1; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; gap: 15px; position: relative; }
-        
-        /* ============================================================
-           REQ: STEALTH INPUT BAR (LINK + BUTTONS ONLY)
-           ============================================================ */
-        .input-reveal-zone {
-            position: fixed; top: 0; left: 110px; right: 230px; /* Chừa chỗ cho Pills bên phải */
-            height: 100px; z-index: 500; display: flex; align-items: flex-start;
-        }
+        /* Stealth Header & Fixed Controls Baseline v48.0 */
+        .input-reveal-zone { position: fixed; top: 0; left: 110px; right: 230px; height: 100px; z-index: 500; display: flex; align-items: flex-start; }
+        .music-input-stealth { width: 100%; display: flex; align-items: center; gap: 15px; background: var(--bg-beige); padding: 12px 25px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transform: translateY(calc(-100% + 8px)); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); will-change: transform; pointer-events: auto; }
+        .input-reveal-zone:hover .music-input-stealth, .music-input-stealth.active { transform: translateY(0); box-shadow: 8px 8px 16px var(--dark-shadow); }
+        input[type="text"] { flex: 1; text-align: center; background: var(--bg-beige); border: none; padding: 10px; border-radius: 12px; outline: none; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); color: var(--text-main); font-family: 'Times New Roman', serif; }
+        .btn-input { background: var(--bg-beige); color: var(--accent-warm); border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 3px 3px 8px var(--dark-shadow), -3px -3px 8px var(--light-reflect); font-size: 11px; }
 
-        .music-input-stealth { 
-            width: 100%; display: flex; align-items: center; gap: 15px;
-            background: var(--bg-beige); padding: 12px 25px; 
-            border-radius: 0 0 20px 20px; 
-            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-            /* GPU Animation */
-            transform: translateY(calc(-100% + 8px)); /* REQ: Để lộ dải 8px */
-            transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-            will-change: transform;
-        }
-
-        .input-reveal-zone:hover .music-input-stealth,
-        .music-input-stealth.active {
-            transform: translateY(0); /* Hiện ra hoàn toàn */
-            box-shadow: 8px 8px 16px var(--dark-shadow);
-        }
-
-        input[type="text"] { flex: 1; text-align: center; background: var(--bg-beige); border: none; padding: 10px; border-radius: 12px; outline: none; font-family: 'Times New Roman', serif; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); color: var(--text-main); }
-        .music-btns { display: flex; gap: 8px; }
-        .btn-input, .btn-file { background: var(--bg-beige); color: var(--accent-warm); border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; text-transform: uppercase; box-shadow: 3px 3px 8px var(--dark-shadow), -3px -3px 8px var(--light-reflect); transition: 0.2s; font-size: 11px; font-family: 'Times New Roman', serif; }
-        .btn-input:active { box-shadow: inset 2px 2px 5px var(--dark-shadow); }
-
-        /* REQ: FIXED SPEED/VOLUME CONTROLS (v46.0 Baseline) */
-        .fixed-controls-row {
-            display: flex; justify-content: flex-end; padding-bottom: 5px;
-        }
+        .fixed-controls-row { display: flex; justify-content: flex-end; padding: 20px 20px 5px 0; }
         .capsule-group { display: flex; gap: 15px; background: var(--bg-beige); padding: 10px 20px; border-radius: 25px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
-        .capsule-pill { width: 60px; height: 100px; background: var(--bg-beige); border-radius: 30px; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); display: flex; flex-direction: column; align-items: center; padding: 6px 4px; box-sizing: border-box; position: relative; justify-content: space-between; }
-        .pill-label { font-size: 8px; font-weight: bold; opacity: 0.7; }
-        .pill-value { font-size: 11px; font-weight: bold; color: var(--accent-warm); }
+        .capsule-pill { width: 60px; height: 100px; background: var(--bg-beige); border-radius: 30px; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); display: flex; flex-direction: column; align-items: center; padding: 6px 4px; position: relative; justify-content: space-between; }
         .pill-track { position: absolute; bottom: 22px; width: 34px; height: 45px; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); overflow: hidden; pointer-events: none; }
         .pill-fill { width: 100%; height: 100%; background: var(--accent-warm); transform-origin: bottom; transform: scaleY(0.5); transition: transform 0.1s linear; will-change: transform; opacity: 0.7; }
         .hidden-range { position: absolute; width: 90px; height: 60px; top: 20px; transform: rotate(-90deg); opacity: 0; cursor: pointer; z-index: 5; }
 
-        /* Lyric & Flow Shared Layout */
-        .editor-layout { display: grid; grid-template-columns: 1fr 220px; gap: 20px; height: 42%; min-height: 220px; }
+        /* Main View Structure */
+        .main-container { flex: 1; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; gap: 15px; position: relative; }
+        .editor-layout { display: grid; grid-template-columns: 1fr 220px; gap: 20px; height: 45%; min-height: 250px; }
         .editor-container-block { background: var(--bg-beige); border-radius: 20px; padding: 10px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); display: flex; flex-direction: column; }
         textarea { background: var(--bg-beige) !important; border: none !important; color: var(--text-main); padding: 20px; font-size: 22px; border-radius: 15px; resize: none; outline: none !important; line-height: 1.7; font-family: 'Times New Roman', serif; box-shadow: inset 6px 6px 10px var(--dark-shadow), inset -6px -6px 10px var(--light-reflect) !important; flex-grow: 1; }
-
-        /* Counter Sidebar - Baseline 3-Layer Rule */
-        .sidebar-right { background: var(--bg-beige); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); padding: 15px 0; }
-        .stat-label { color: #8a8477; font-size: 12px; letter-spacing: 2px; font-weight: bold; text-transform: uppercase; opacity: 0.7; }
-        .inset-box { background: var(--bg-beige); border-radius: 12px; padding: 8px 5px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect) !important; }
-        .target-input { display: block; margin: 0 auto; width: 75px; background: transparent; border: none; color: var(--accent-warm); text-align: center; font-size: 22px; font-weight: bold; outline: none; font-family: 'Times New Roman', serif; }
-        .raised-num { font-weight: 900; color: var(--accent-warm); text-shadow: 1px 1px 2px var(--dark-shadow), -1px -1px 2px var(--light-reflect); }
-        .count-val { font-size: 70px; line-height: 1; }
-
-        /* Note Section - Centered Toolbar Baseline */
+        .sidebar-right { background: var(--bg-beige); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
+        .count-val { font-size: 70px; font-weight: 900; color: var(--accent-warm); text-shadow: 1px 1px 2px var(--dark-shadow); }
         .note-section { flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-beige); border-radius: 25px; padding: 15px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); overflow: hidden; gap: 10px; }
-        .note-toolbar { display: flex; gap: 10px; padding: 10px; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); align-items: center; justify-content: center; }
-        .tool-btn { background: var(--bg-beige); border: none; padding: 6px 14px; border-radius: 8px; font-family: 'Times New Roman', serif; font-weight: bold; cursor: pointer; color: var(--text-main); box-shadow: 3px 3px 6px var(--dark-shadow), -3px -3px 6px var(--light-reflect); transition: 0.2s; font-size: 14px; }
-        .tool-btn:active { box-shadow: inset 2px 2px 4px var(--dark-shadow); color: var(--accent-warm); }
-        #note-editor { flex: 1; color: #7a7468; font-size: 18px; outline: none; padding: 20px; overflow-y: auto; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); font-family: 'Times New Roman', serif; }
-
+        .note-toolbar { display: flex; gap: 10px; padding: 10px; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); justify-content: center; }
+        #note-editor { flex: 1; outline: none; padding: 20px; overflow-y: auto; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
         .hidden { display: none !important; }
         #flow-counts-sidebar { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; overflow-y: hidden; padding-top: 20px; }
         .flow-chip-wrapper { height: 52.8px; display: flex; align-items: center; justify-content: center; width: 100%; }
-        .flow-number-chip { width: 60px; height: 35px; background: var(--bg-beige); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: var(--accent-warm); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); text-shadow: 1px 1px 2px var(--dark-shadow), -1px -1px 2px var(--light-reflect); }
-        
-        #video-wrap { background: var(--bg-beige); border-radius: 15px; height: 60px; overflow: hidden; display: none; margin-top: 5px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); padding: 5px; }
+        .flow-number-chip { width: 60px; height: 35px; background: var(--bg-beige); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: var(--accent-warm); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); text-shadow: 1px 1px 2px var(--dark-shadow); }
     </style>
 </head>
-<body ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+<body>
 
     <div class="sidebar-left">
         <button class="tab-btn active" id="btnLyric" onclick="switchTab('lyric')">LYRIC</button>
         <button class="tab-btn" id="btnFlow" onclick="switchTab('flow')">FLOW</button>
+        <div class="account-section">
+            <span class="user-status" id="authStatus">Offline</span>
+            <button class="login-btn" id="loginBtn" onclick="handleAuth()">G</button>
+        </div>
     </div>
 
     <div class="input-reveal-zone" id="stealthZone">
         <div class="music-input-stealth" id="stealthBar">
             <input type="text" id="musicUrl" placeholder="Paste link or DROP file here...">
-            <div class="music-btns">
-                <button class="btn-input" onclick="loadMusic()">LINK</button>
-                <button class="btn-file" onclick="document.getElementById('fileInput').click()">FILE</button>
-                <input type="file" id="fileInput" hidden accept="audio/*" onchange="handleFile(this.files[0])">
-            </div>
+            <button class="btn-input" onclick="loadMusic()">LINK</button>
+            <button class="btn-input" onclick="document.getElementById('fileInput').click()">FILE</button>
+            <input type="file" id="fileInput" hidden accept="audio/*" onchange="handleFile(this.files[0])">
         </div>
     </div>
 
     <div class="main-container">
         <div class="fixed-controls-row">
             <div class="capsule-group">
-                <div class="capsule-pill">
-                    <span class="pill-label">SPEED</span>
-                    <div class="pill-track"><div id="speedFill" class="pill-fill"></div></div>
-                    <span id="speedVal" class="pill-value">1.0x</span>
-                    <input type="range" min="0.5" max="2" step="0.1" value="1" class="hidden-range" oninput="updateSpeedUI(this.value)">
-                </div>
-                <div class="capsule-pill">
-                    <span class="pill-label">VOL</span>
-                    <div class="pill-track"><div id="volFill" class="pill-fill"></div></div>
-                    <span id="volVal" class="pill-value">100%</span>
-                    <input type="range" min="0" max="100" value="100" class="hidden-range" oninput="updateVolUI(this.value)">
-                </div>
+                <div class="capsule-pill"><span class="pill-label">SPEED</span><div class="pill-track"><div id="speedFill" class="pill-fill"></div></div><span id="speedVal" class="pill-value">1.0x</span><input type="range" min="0.5" max="2" step="0.1" value="1" class="hidden-range" oninput="updateSpeedUI(this.value)"></div>
+                <div class="capsule-pill"><span class="pill-label">VOL</span><div class="pill-track"><div id="volFill" class="pill-fill"></div></div><span id="volVal" class="pill-value">100%</span><input type="range" min="0" max="100" value="100" class="hidden-range" oninput="updateVolUI(this.value)"></div>
             </div>
         </div>
 
-        <div id="video-wrap"><audio id="local-audio" controls style="width: 100%;"></audio><div id="yt-player-container"></div></div>
-
         <div id="lyric-view">
             <div class="editor-layout">
-                <div class="editor-container-block"><textarea id="lyric-editor" placeholder="Write lyric here..." oninput="updateRemaining()"></textarea></div>
+                <div class="editor-container-block"><textarea id="lyric-editor" placeholder="Write lyric here..." oninput="autoSave()"></textarea></div>
                 <div class="sidebar-right">
-                    <div class="stat-group"><span class="stat-label">TARGET</span><div class="inset-box"><input type="number" id="target" value="10" class="target-input" oninput="updateRemaining()"></div></div>
-                    <div class="stat-group"><span class="stat-label">REMAINING</span><div id="result" class="count-val raised-num">10</div></div>
+                    <span class="stat-label">REMAINING</span>
+                    <div id="result" class="count-val">10</div>
+                    <input type="number" id="target" value="10" style="width:50px; background:transparent; border:none; text-align:center; color:var(--accent-warm); font-weight:bold;" oninput="autoSave()">
                 </div>
             </div>
-            
             <div class="note-section">
                 <div class="note-toolbar">
-                    <button class="tool-btn" onclick="formatDoc('bold')">B</button>
-                    <button class="tool-btn" onclick="formatDoc('italic')">I</button>
-                    <button class="tool-btn" onclick="formatDoc('underline')">U</button>
-                    <div style="width: 1px; height: 18px; background: var(--dark-shadow); margin: 0 5px;"></div>
-                    <button class="tool-btn" onclick="formatDoc('justifyCenter')">Center</button>
+                    <button style="border:none; background:none; cursor:pointer; font-weight:bold;" onclick="document.execCommand('bold')">B</button>
+                    <button style="border:none; background:none; cursor:pointer; font-style:italic;" onclick="document.execCommand('italic')">I</button>
                 </div>
-                <div id="note-editor" contenteditable="true">Your notes here...</div>
+                <div id="note-editor" contenteditable="true" oninput="autoSave()">Your notes here...</div>
             </div>
         </div>
 
         <div id="flow-view" class="hidden">
             <div class="editor-layout">
-                <div class="editor-container-block"><textarea id="flow-editor" placeholder="Write flow here..." oninput="renderFlowCounts()" onscroll="syncScroll()"></textarea></div>
-                <div class="sidebar-right">
-                    <span class="stat-label">LINE COUNTS</span>
-                    <div id="flow-counts-sidebar"><div id="flow-counts"></div></div>
-                </div>
+                <div class="editor-container-block"><textarea id="flow-editor" placeholder="Write flow here..." oninput="renderFlowCounts(); autoSave()" onscroll="syncScroll()"></textarea></div>
+                <div class="sidebar-right"><div id="flow-counts-sidebar"><div id="flow-counts"></div></div></div>
             </div>
         </div>
+        <audio id="aud" controls style="display:none; width:100%; margin-top:10px;"></audio>
     </div>
 
-    <script src="https://www.youtube.com/iframe_api"></script>
-    <script src="https://w.soundcloud.com/player/api.js"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        let ytPlayer, scWidget, currentMode = '';
-        const stealthBar = document.getElementById('stealthBar');
-        const stealthZone = document.getElementById('stealthZone');
-        let hideTimeout;
+        const CLIENT_ID = "84269004246-gl2gvfsc0m8ql9kqraak3tliefltv9b2.apps.googleusercontent.com";
+        let accessToken = null, hideTimeout;
 
-        // REQ: Auto-hide 5s Timer Logic
-        function startHideTimer() {
-            clearTimeout(hideTimeout);
-            hideTimeout = setTimeout(() => {
-                stealthBar.classList.remove('active');
-            }, 5000); // 5 seconds
+        // --- GOOGLE DRIVE SYNC LOGIC ---
+        function handleAuth() {
+            const client = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: 'https://www.googleapis.com/auth/drive.file',
+                callback: (tokenResponse) => {
+                    if (tokenResponse.access_token) {
+                        accessToken = tokenResponse.access_token;
+                        document.getElementById('authStatus').innerText = "Online";
+                        document.getElementById('loginBtn').classList.add('online');
+                        saveToDrive(); // Đồng bộ lần đầu khi login
+                    }
+                },
+            });
+            client.requestAccessToken();
         }
 
-        stealthZone.addEventListener('mouseenter', () => {
-            clearTimeout(hideTimeout);
-            stealthBar.classList.add('active');
-        });
+        async function saveToDrive() {
+            if (!accessToken) return;
+            const content = localStorage.getItem('rapStudioData');
+            const metadata = { name: 'rap_studio_backup.json', mimeType: 'application/json' };
+            const form = new FormData();
+            form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+            form.append('file', new Blob([content], { type: 'application/json' }));
 
-        stealthZone.addEventListener('mouseleave', () => {
-            startHideTimer();
-        });
-
-        // Initialize Timer on load
-        window.onload = () => { 
-            updateVolUI(100); 
-            updateSpeedUI(1.0); 
-            startHideTimer(); 
-        };
-
-        // UI Updates GPU Accelerated
-        function updateSpeedUI(val) {
-            document.getElementById('speedVal').innerText = parseFloat(val).toFixed(1) + 'x';
-            let percent = (val - 0.5) / 1.5;
-            document.getElementById('speedFill').style.transform = `scaleY(${percent})`;
-            if(currentMode === 'yt' && ytPlayer) ytPlayer.setPlaybackRate(parseFloat(val));
-            if(currentMode === 'local') document.getElementById('local-audio').playbackRate = parseFloat(val);
+            fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
+                method: 'POST',
+                headers: { 'Authorization': 'Bearer ' + accessToken },
+                body: form
+            }).then(res => console.log("Synced to Drive"));
         }
 
-        function updateVolUI(val) {
-            document.getElementById('volVal').innerText = val + '%';
-            document.getElementById('volFill').style.transform = `scaleY(${val / 100})`;
-            if(currentMode === 'yt' && ytPlayer) ytPlayer.setVolume(val);
-            else if(currentMode === 'sc' && scWidget) scWidget.setVolume(val);
-            if(currentMode === 'local') document.getElementById('local-audio').volume = val / 100;
+        // --- BASELINE v48.0 CORE LOGIC ---
+        function autoSave() {
+            const data = {
+                lyric: document.getElementById('lyric-editor').value,
+                flow: document.getElementById('flow-editor').value,
+                note: document.getElementById('note-editor').innerHTML,
+                target: document.getElementById('target').value
+            };
+            localStorage.setItem('rapStudioData', JSON.stringify(data));
+            updateRemaining();
+            if (accessToken) saveToDrive(); // Tự động đẩy lên Drive mỗi khi gõ
         }
 
-        // Baseline functions
-        function formatDoc(cmd, val) { document.execCommand(cmd, false, val); document.getElementById('note-editor').focus(); }
-        function getCleanWordCount(text) { if (!text) return 0; return text.trim().split(/\s+/).filter(word => word.length > 0 && !/^[.-]+$/.test(word)).length; }
-        function switchTab(tab) {
-            if (tab === 'lyric') { 
-                document.getElementById('btnLyric').classList.add('active'); document.getElementById('btnFlow').classList.remove('active');
-                document.getElementById('lyric-view').classList.remove('hidden'); document.getElementById('flow-view').classList.add('hidden');
-            } else { 
-                document.getElementById('btnFlow').classList.add('active'); document.getElementById('btnLyric').classList.remove('active');
-                document.getElementById('flow-view').classList.remove('hidden'); document.getElementById('lyric-view').classList.add('hidden');
-                renderFlowCounts();
+        function loadLocal() {
+            const s = localStorage.getItem('rapStudioData');
+            if(s) {
+                const d = JSON.parse(s);
+                document.getElementById('lyric-editor').value = d.lyric||'';
+                document.getElementById('flow-editor').value = d.flow||'';
+                document.getElementById('note-editor').innerHTML = d.note||'';
+                document.getElementById('target').value = d.target||10;
             }
+            updateRemaining();
         }
-        function renderFlowCounts() { const lines = document.getElementById('flow-editor').value.split('\n'); document.getElementById('flow-counts').innerHTML = lines.map(line => `<div class="flow-chip-wrapper"><div class="flow-number-chip">${getCleanWordCount(line) || ''}</div></div>`).join(''); }
+
+        function startHide() { clearTimeout(hideTimeout); hideTimeout = setTimeout(() => { document.getElementById('stealthBar').classList.remove('active'); }, 5000); }
+        document.getElementById('stealthZone').onmouseenter = () => { clearTimeout(hideTimeout); document.getElementById('stealthBar').classList.add('active'); };
+        document.getElementById('stealthZone').onmouseleave = startHide;
+
+        function updateSpeedUI(v) { document.getElementById('speedVal').innerText = v + 'x'; document.getElementById('speedFill').style.transform = `scaleY(${(v-0.5)/1.5})`; document.getElementById('aud').playbackRate = v; }
+        function updateVolUI(v) { document.getElementById('volVal').innerText = v + '%'; document.getElementById('volFill').style.transform = `scaleY(${v/100})`; document.getElementById('aud').volume = v/100; }
+        function getWords(t) { return t ? t.trim().split(/\s+/).filter(w => w.length > 0).length : 0; }
+        function switchTab(t) {
+            document.getElementById('lyric-view').classList.toggle('hidden', t!=='lyric');
+            document.getElementById('flow-view').classList.toggle('hidden', t!=='flow');
+            document.getElementById('btnLyric').classList.add('active'); document.getElementById('btnFlow').classList.remove('active');
+            if(t==='flow') { renderFlowCounts(); document.getElementById('btnFlow').classList.add('active'); document.getElementById('btnLyric').classList.remove('active'); }
+        }
+        function renderFlowCounts() { const lines = document.getElementById('flow-editor').value.split('\n'); document.getElementById('flow-counts').innerHTML = lines.map(l => `<div class="flow-chip-wrapper"><div class="flow-number-chip">${getWords(l)||''}</div></div>`).join(''); }
         function syncScroll() { document.getElementById('flow-counts-sidebar').scrollTop = document.getElementById('flow-editor').scrollTop; }
-        function updateRemaining() { const left = document.getElementById('target').value - getCleanWordCount(document.getElementById('lyric-editor').value); const res = document.getElementById('result'); res.innerText = left; res.style.color = left < 0 ? "#d9534f" : "var(--accent-warm)"; }
-        function handleFile(file) { if (!file) return; currentMode = 'local'; document.getElementById('local-audio').src = URL.createObjectURL(file); document.getElementById('video-wrap').style.display = 'block'; document.getElementById('yt-player-container').innerHTML = ''; document.getElementById('local-audio').play(); }
-        function loadMusic() {
-            const url = document.getElementById('musicUrl').value.trim(); const wrap = document.getElementById('video-wrap'); if(!url) return; wrap.style.display = 'block';
-            if (url.includes('youtube') || url.includes('youtu.be')) { currentMode = 'yt'; let id = url.includes('v=') ? url.split('v=')[1].split('&')[0] : url.split('/').pop(); document.getElementById('yt-player-container').innerHTML = '<div id="yt-player"></div>'; ytPlayer = new YT.Player('yt-player', { height: '100%', width: '100%', videoId: id, playerVars: { 'autoplay': 1 } }); } 
-            else { currentMode = 'sc'; const iframe = document.createElement('iframe'); iframe.id = 'sc-iframe'; iframe.width = "100%"; iframe.height = "100%"; iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&auto_play=true&visual=false&color=c18c5d`; document.getElementById('yt-player-container').innerHTML = ''; document.getElementById('yt-player-container').appendChild(iframe); scWidget = SC.Widget(iframe); }
-        }
+        function updateRemaining() { const rem = document.getElementById('target').value - getWords(document.getElementById('lyric-editor').value); document.getElementById('result').innerText = rem; }
+        function handleFile(f) { document.getElementById('aud').src = URL.createObjectURL(f); document.getElementById('aud').style.display='block'; document.getElementById('aud').play(); }
+        
+        window.onload = () => { loadLocal(); updateVolUI(100); updateSpeedUI(1.0); startHide(); };
     </script>
 </body>
 </html>
