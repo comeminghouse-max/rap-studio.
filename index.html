@@ -3,62 +3,161 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rap Studio Pro v51.1 - Cloud Master</title>
+    <title>Rap Studio Pro v56.0 - Dark Mode</title>
+    <script src="https://w.soundcloud.com/player/api.js"></script>
     <style>
-        :root { --bg-beige: #e8e2d2; --light-reflect: #ffffff; --dark-shadow: #c5beb0; --text-main: #5d574a; --accent-warm: #c18c5d; --border-soft: rgba(255, 255, 255, 0.5); }
-        body { font-family: 'Times New Roman', Times, serif; background-color: var(--bg-beige); color: var(--text-main); margin: 0; padding: 0; height: 100vh; display: flex; overflow: hidden; }
-        .sidebar-left { width: 110px; background: var(--bg-beige); display: flex; flex-direction: column; align-items: center; gap: 20px; padding: 40px 10px; border-right: 1px solid var(--border-soft); z-index: 1000; }
-        .tab-btn { width: 80px; background: var(--bg-beige); color: var(--text-main); border: none; padding: 12px 5px; cursor: pointer; font-family: 'Times New Roman', serif; font-weight: bold; border-radius: 12px; box-shadow: 6px 6px 12px var(--dark-shadow), -6px -6px 12px var(--light-reflect); opacity: 0.6; }
-        .tab-btn.active { opacity: 1; color: var(--accent-warm); box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
-        .account-section { margin-top: auto; padding-bottom: 20px; display: flex; flex-direction: column; align-items: center; gap: 10px; width: 100%; }
-        .login-btn { background: var(--bg-beige); color: #4285F4; border: none; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 10px var(--dark-shadow), -4px -4px 10px var(--light-reflect); }
-        .login-btn.online { color: #34A853; box-shadow: inset 2px 2px 5px var(--dark-shadow); }
-        .user-status { font-size: 10px; font-weight: bold; text-transform: uppercase; opacity: 0.6; }
+        /* --- HỆ THỐNG MÀU SẮC (THEME VARIABLES) --- */
+        :root {
+            /* Mặc định: LIGHT MODE */
+            --bg-main: #e8e2d2;
+            --light-reflect: #ffffff;
+            --dark-shadow: #c5beb0;
+            --text-main: #5d574a;
+            --accent-warm: #c18c5d;
+            --border-soft: rgba(255, 255, 255, 0.5);
+            --toggle-bg: #87CEEB; /* Màu trời xanh */
+            --toggle-circle: #FFD700; /* Mặt trời vàng */
+        }
 
-        /* Stealth Header & Fixed Controls Baseline v48.0 */
-        .input-reveal-zone { position: fixed; top: 0; left: 110px; right: 230px; height: 100px; z-index: 500; display: flex; align-items: flex-start; }
-        .music-input-stealth { width: 100%; display: flex; align-items: center; gap: 15px; background: var(--bg-beige); padding: 12px 25px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); transform: translateY(calc(-100% + 8px)); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); will-change: transform; pointer-events: auto; }
-        .input-reveal-zone:hover .music-input-stealth, .music-input-stealth.active { transform: translateY(0); box-shadow: 8px 8px 16px var(--dark-shadow); }
-        input[type="text"] { flex: 1; text-align: center; background: var(--bg-beige); border: none; padding: 10px; border-radius: 12px; outline: none; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); color: var(--text-main); font-family: 'Times New Roman', serif; }
-        .btn-input { background: var(--bg-beige); color: var(--accent-warm); border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 3px 3px 8px var(--dark-shadow), -3px -3px 8px var(--light-reflect); font-size: 11px; }
+        /* DARK MODE VARIABLES */
+        body.dark-mode {
+            --bg-main: #2e3238; /* Xám đen Titan */
+            --light-reflect: #3e444c; /* Ánh sáng nhẹ trên nền tối */
+            --dark-shadow: #1e2125; /* Bóng đen sâu */
+            --text-main: #e0d8c8; /* Chữ màu be sáng */
+            --accent-warm: #d49e6b; /* Màu cam đất sáng hơn chút */
+            --border-soft: rgba(255, 255, 255, 0.05);
+            --toggle-bg: #1a1c20; /* Bầu trời đêm */
+            --toggle-circle: #dcdcdc; /* Mặt trăng bạc */
+        }
 
-        .fixed-controls-row { display: flex; justify-content: flex-end; padding: 20px 20px 5px 0; }
-        .capsule-group { display: flex; gap: 15px; background: var(--bg-beige); padding: 10px 20px; border-radius: 25px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
-        .capsule-pill { width: 60px; height: 100px; background: var(--bg-beige); border-radius: 30px; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); display: flex; flex-direction: column; align-items: center; padding: 6px 4px; position: relative; justify-content: space-between; }
-        .pill-track { position: absolute; bottom: 22px; width: 34px; height: 45px; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); overflow: hidden; pointer-events: none; }
-        .pill-fill { width: 100%; height: 100%; background: var(--accent-warm); transform-origin: bottom; transform: scaleY(0.5); transition: transform 0.1s linear; will-change: transform; opacity: 0.7; }
+        body { font-family: 'Times New Roman', Times, serif; background-color: var(--bg-main); color: var(--text-main); margin: 0; padding: 0; height: 100vh; display: flex; overflow: hidden; transition: background-color 0.3s, color 0.3s; }
+
+        /* --- SIDEBAR --- */
+        .sidebar-left { width: 150px; background: var(--bg-main); display: flex; flex-direction: column; align-items: center; gap: 15px; padding: 25px 10px; border-right: 1px solid var(--border-soft); z-index: 1000; flex-shrink: 0; transition: background-color 0.3s; }
+        
+        /* THEME TOGGLE SWITCH (New!) */
+        .theme-switch-wrapper { width: 100%; display: flex; justify-content: center; margin-bottom: 5px; }
+        .theme-switch { position: relative; display: inline-block; width: 60px; height: 30px; }
+        .theme-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--toggle-bg); transition: .4s; border-radius: 34px; box-shadow: inset 2px 2px 5px rgba(0,0,0,0.5), inset -1px -1px 3px rgba(255,255,255,0.2); }
+        .slider:before { position: absolute; content: ""; height: 22px; width: 22px; left: 4px; bottom: 4px; background-color: var(--toggle-circle); transition: .4s; border-radius: 50%; box-shadow: 2px 2px 4px rgba(0,0,0,0.4); }
+        input:checked + .slider:before { transform: translateX(30px); }
+
+        .btn-new-proj { width: 100%; background: var(--accent-warm); color: white; border: none; padding: 12px; border-radius: 12px; font-weight: bold; cursor: pointer; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); font-family: 'Times New Roman', serif; transition: transform 0.1s; letter-spacing: 1px; }
+        .btn-new-proj:active { transform: scale(0.96); box-shadow: inset 2px 2px 5px rgba(0,0,0,0.3); }
+
+        /* PROJECT LIST */
+        .project-list-container { width: 100%; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding: 5px; border-bottom: 1px solid var(--border-soft); margin-bottom: 10px; }
+        .project-list-container::-webkit-scrollbar { width: 0px; }
+        
+        .project-item { width: 100%; padding: 10px; background: var(--bg-main); border-radius: 10px; font-size: 13px; cursor: pointer; box-shadow: 5px 5px 10px var(--dark-shadow), -5px -5px 10px var(--light-reflect); display: flex; justify-content: space-between; align-items: center; box-sizing: border-box; transition: 0.2s; border: 1px solid transparent; color: var(--text-main); position: relative; }
+        .project-item.active { box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); color: var(--accent-warm); font-weight: bold; }
+        .project-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 80px; flex-grow: 1; text-align: left; pointer-events: none; }
+        
+        /* FIX NÚT XÓA/SỬA */
+        .item-actions { display: flex; gap: 5px; opacity: 0; transition: opacity 0.2s; z-index: 10; position: relative; }
+        .project-item:hover .item-actions { opacity: 1; }
+        .btn-icon { background: var(--bg-main); border: none; cursor: pointer; font-size: 14px; padding: 4px; border-radius: 5px; font-weight: bold; transition: 0.2s; box-shadow: 2px 2px 4px var(--dark-shadow), -2px -2px 4px var(--light-reflect); display: flex; align-items: center; justify-content: center; }
+        .btn-icon:hover { transform: scale(1.1); }
+        .btn-icon:active { box-shadow: inset 2px 2px 4px var(--dark-shadow); }
+        .btn-edit { color: #6495ED; } 
+        .btn-delete { color: #ff6b6b; }
+
+        .tab-btn { width: 100%; background: var(--bg-main); color: var(--text-main); border: none; padding: 10px; cursor: pointer; font-family: 'Times New Roman', serif; font-weight: bold; border-radius: 12px; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); opacity: 0.7; }
+        .tab-btn.active { opacity: 1; color: var(--accent-warm); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); }
+        .account-section { display: flex; flex-direction: column; align-items: center; gap: 5px; width: 100%; }
+        .login-btn { width: 50px; height: 50px; border-radius: 50%; border: none; background: var(--bg-main); box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); color: #4285F4; font-weight: bold; font-size: 20px; cursor: pointer; transition: 0.3s; }
+        .login-btn.online { color: #34A853; box-shadow: inset 2px 2px 5px var(--dark-shadow), inset -2px -2px 5px var(--light-reflect); }
+
+        /* --- MAIN UI --- */
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); opacity: 0; visibility: hidden; transition: 0.3s; }
+        .modal-overlay.show { opacity: 1; visibility: visible; }
+        .modal-box { background: var(--bg-main); padding: 25px; border-radius: 20px; width: 300px; box-shadow: 10px 10px 30px var(--dark-shadow), -10px -10px 30px var(--light-reflect); text-align: center; display: flex; flex-direction: column; gap: 20px; transform: scale(0.8); transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); border: 1px solid var(--border-soft); }
+        .modal-overlay.show .modal-box { transform: scale(1); }
+        .modal-title { font-size: 18px; font-weight: bold; color: var(--accent-warm); }
+        .modal-input { padding: 12px; border-radius: 10px; border: none; background: var(--bg-main); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); font-family: 'Times New Roman', serif; font-size: 16px; text-align: center; outline: none; color: var(--text-main); }
+        .modal-actions { display: flex; gap: 15px; justify-content: center; }
+        .modal-btn { padding: 10px 20px; border-radius: 10px; border: none; cursor: pointer; font-weight: bold; font-family: 'Times New Roman', serif; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); transition: 0.2s; }
+        .btn-cancel { background: var(--bg-main); color: var(--text-main); }
+        .btn-create { background: var(--accent-warm); color: white; }
+        .btn-create:active, .btn-cancel:active { box-shadow: inset 2px 2px 4px var(--dark-shadow); transform: scale(0.95); }
+
+        .input-reveal-zone { position: fixed; top: 0; left: 150px; right: 230px; height: 100px; z-index: 500; display: flex; align-items: flex-start; }
+        .music-input-stealth { width: 100%; display: flex; align-items: center; gap: 15px; background: var(--bg-main); padding: 12px 25px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); transform: translateY(calc(-100% + 8px)); transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1); will-change: transform; pointer-events: auto; }
+        .input-reveal-zone:hover .music-input-stealth, .music-input-stealth.active { transform: translateY(0); box-shadow: 8px 8px 20px var(--dark-shadow); }
+        
+        .input-wrapper { position: relative; flex: 1; }
+        input[type="text"] { width: 100%; box-sizing: border-box; text-align: center; background: var(--bg-main); border: none; padding: 10px; border-radius: 12px; outline: none; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); color: var(--text-main); font-family: 'Times New Roman', serif; }
+        
+        .history-dropdown { position: absolute; top: 110%; left: 0; width: 100%; background: var(--bg-main); border-radius: 10px; box-shadow: 4px 4px 10px var(--dark-shadow); z-index: 2000; overflow: hidden; display: none; max-height: 200px; overflow-y: auto; border: 1px solid var(--border-soft); }
+        .history-dropdown.show { display: block; }
+        .history-item { padding: 10px 15px; font-size: 12px; cursor: pointer; border-bottom: 1px solid var(--border-soft); text-align: left; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-main); transition: 0.2s; }
+        .history-item:hover { background: var(--accent-warm); color: white; }
+
+        .btn-input { background: var(--bg-main); color: var(--accent-warm); border: none; padding: 10px 15px; border-radius: 10px; font-weight: bold; cursor: pointer; box-shadow: 3px 3px 8px var(--dark-shadow), -3px -3px 8px var(--light-reflect); font-size: 11px; }
+
+        .fixed-controls-row { display: flex; justify-content: flex-end; padding: 20px 20px 5px 0; margin-top: 208px; }
+        .capsule-group { display: flex; gap: 10px; background: var(--bg-main); padding: 10px 15px; border-radius: 25px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
+        .capsule-pill { width: 65px; height: 150px; background: var(--bg-main); border-radius: 30px; box-shadow: 4px 4px 8px var(--dark-shadow), -4px -4px 8px var(--light-reflect); display: flex; flex-direction: column; align-items: center; padding: 6px 4px; position: relative; justify-content: space-between; }
+        .pill-track { position: absolute; bottom: 22px; width: 34px; height: 100px; background: var(--bg-main); border-radius: 20px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); overflow: hidden; pointer-events: none; }
+        .pill-fill { width: 100%; height: 100%; background: var(--accent-warm); transform-origin: bottom; transform: scaleY(0.5); transition: transform 0.1s linear; will-change: transform; opacity: 0.8; }
         .hidden-range { position: absolute; width: 90px; height: 60px; top: 20px; transform: rotate(-90deg); opacity: 0; cursor: pointer; z-index: 5; }
-
-        /* Main View Structure */
+        .pill-value { font-size: 12px; font-weight: bold; } .pill-label { font-size: 10px; opacity: 0.7; margin-top: 5px; }
+        
         .main-container { flex: 1; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; gap: 15px; position: relative; }
         .editor-layout { display: grid; grid-template-columns: 1fr 220px; gap: 20px; height: 45%; min-height: 250px; }
-        .editor-container-block { background: var(--bg-beige); border-radius: 20px; padding: 10px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); display: flex; flex-direction: column; }
-        textarea { background: var(--bg-beige) !important; border: none !important; color: var(--text-main); padding: 20px; font-size: 22px; border-radius: 15px; resize: none; outline: none !important; line-height: 1.7; font-family: 'Times New Roman', serif; box-shadow: inset 6px 6px 10px var(--dark-shadow), inset -6px -6px 10px var(--light-reflect) !important; flex-grow: 1; }
-        .sidebar-right { background: var(--bg-beige); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
-        .count-val { font-size: 70px; font-weight: 900; color: var(--accent-warm); text-shadow: 1px 1px 2px var(--dark-shadow); }
-        .note-section { flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-beige); border-radius: 25px; padding: 15px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); overflow: hidden; gap: 10px; }
-        .note-toolbar { display: flex; gap: 10px; padding: 10px; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); justify-content: center; }
-        #note-editor { flex: 1; outline: none; padding: 20px; overflow-y: auto; background: var(--bg-beige); border-radius: 15px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
+        .editor-container-block { background: var(--bg-main); border-radius: 20px; padding: 10px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); display: flex; flex-direction: column; transition: background-color 0.3s; }
+        textarea { background: var(--bg-main) !important; border: none !important; color: var(--text-main); padding: 20px; font-size: 22px; border-radius: 15px; resize: none; outline: none !important; line-height: 1.7; font-family: 'Times New Roman', serif; box-shadow: inset 6px 6px 10px var(--dark-shadow), inset -6px -6px 10px var(--light-reflect) !important; flex-grow: 1; transition: background-color 0.3s, color 0.3s; }
+        .sidebar-right { background: var(--bg-main); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: space-evenly; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); transition: background-color 0.3s; }
+        .count-val { font-size: 70px; font-weight: 900; color: var(--accent-warm); text-shadow: 2px 2px 4px var(--dark-shadow); }
+        .note-section { flex-grow: 1; display: flex; flex-direction: column; background: var(--bg-main); border-radius: 25px; padding: 15px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); overflow: hidden; gap: 10px; transition: background-color 0.3s; }
+        .note-toolbar { display: flex; gap: 10px; padding: 10px; background: var(--bg-main); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); justify-content: center; }
+        .note-toolbar button { color: var(--text-main); transition: 0.3s; }
+        #note-editor { flex: 1; outline: none; padding: 20px; overflow-y: auto; background: var(--bg-main); border-radius: 15px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); color: var(--text-main); }
         .hidden { display: none !important; }
         #flow-counts-sidebar { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; overflow-y: hidden; padding-top: 20px; }
         .flow-chip-wrapper { height: 52.8px; display: flex; align-items: center; justify-content: center; width: 100%; }
-        .flow-number-chip { width: 60px; height: 35px; background: var(--bg-beige); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: var(--accent-warm); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); text-shadow: 1px 1px 2px var(--dark-shadow); }
+        .flow-number-chip { width: 60px; height: 35px; background: var(--bg-main); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 20px; font-weight: bold; color: var(--accent-warm); box-shadow: inset 3px 3px 6px var(--dark-shadow), inset -3px -3px 6px var(--light-reflect); text-shadow: 1px 1px 2px var(--dark-shadow); }
     </style>
 </head>
 <body>
 
     <div class="sidebar-left">
+        <div class="theme-switch-wrapper">
+            <label class="theme-switch">
+                <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
+                <span class="slider"></span>
+            </label>
+        </div>
+
+        <button class="btn-new-proj" onclick="openNewModal()">+ NEW</button>
+        <div class="project-list-container" id="projectList"></div>
         <button class="tab-btn active" id="btnLyric" onclick="switchTab('lyric')">LYRIC</button>
         <button class="tab-btn" id="btnFlow" onclick="switchTab('flow')">FLOW</button>
         <div class="account-section">
-            <span class="user-status" id="authStatus">Offline</span>
+            <span style="font-size:9px; font-weight:bold; opacity:0.5;" id="authStatus">OFFLINE</span>
             <button class="login-btn" id="loginBtn" onclick="handleAuth()">G</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal-box">
+            <div class="modal-title" id="modalTitle">New Track Name</div>
+            <input type="text" class="modal-input" id="newProjectName" placeholder="Enter song name..." onkeypress="handleEnter(event)">
+            <div class="modal-actions">
+                <button class="modal-btn btn-cancel" onclick="closeModal()">Cancel</button>
+                <button class="modal-btn btn-create" id="modalSubmitBtn" onclick="handleModalSubmit()">Create</button>
+            </div>
         </div>
     </div>
 
     <div class="input-reveal-zone" id="stealthZone">
         <div class="music-input-stealth" id="stealthBar">
-            <input type="text" id="musicUrl" placeholder="Paste link or DROP file here...">
+            <div class="input-wrapper">
+                <input type="text" id="musicUrl" placeholder="Paste link here... (Click for history)" onfocus="showHistory()" onblur="hideHistory()">
+                <div id="historyList" class="history-dropdown"></div>
+            </div>
             <button class="btn-input" onclick="loadMusic()">LINK</button>
             <button class="btn-input" onclick="document.getElementById('fileInput').click()">FILE</button>
             <input type="file" id="fileInput" hidden accept="audio/*" onchange="handleFile(this.files[0])">
@@ -72,14 +171,13 @@
                 <div class="capsule-pill"><span class="pill-label">VOL</span><div class="pill-track"><div id="volFill" class="pill-fill"></div></div><span id="volVal" class="pill-value">100%</span><input type="range" min="0" max="100" value="100" class="hidden-range" oninput="updateVolUI(this.value)"></div>
             </div>
         </div>
-
         <div id="lyric-view">
             <div class="editor-layout">
-                <div class="editor-container-block"><textarea id="lyric-editor" placeholder="Write lyric here..." oninput="autoSave()"></textarea></div>
+                <div class="editor-container-block"><textarea id="lyric-editor" placeholder="Write lyric here..." oninput="saveCurrentProject()"></textarea></div>
                 <div class="sidebar-right">
-                    <span class="stat-label">REMAINING</span>
+                    <span style="font-size:10px; opacity:0.6; margin-top:10px;">REMAINING</span>
                     <div id="result" class="count-val">10</div>
-                    <input type="number" id="target" value="10" style="width:50px; background:transparent; border:none; text-align:center; color:var(--accent-warm); font-weight:bold;" oninput="autoSave()">
+                    <input type="number" id="target" value="10" style="width:50px; background:transparent; border:none; text-align:center; color:var(--accent-warm); font-weight:bold;" oninput="saveCurrentProject()">
                 </div>
             </div>
             <div class="note-section">
@@ -87,100 +185,254 @@
                     <button style="border:none; background:none; cursor:pointer; font-weight:bold;" onclick="document.execCommand('bold')">B</button>
                     <button style="border:none; background:none; cursor:pointer; font-style:italic;" onclick="document.execCommand('italic')">I</button>
                 </div>
-                <div id="note-editor" contenteditable="true" oninput="autoSave()">Your notes here...</div>
+                <div id="note-editor" contenteditable="true" oninput="saveCurrentProject()">Your notes here...</div>
             </div>
         </div>
-
         <div id="flow-view" class="hidden">
             <div class="editor-layout">
-                <div class="editor-container-block"><textarea id="flow-editor" placeholder="Write flow here..." oninput="renderFlowCounts(); autoSave()" onscroll="syncScroll()"></textarea></div>
+                <div class="editor-container-block"><textarea id="flow-editor" placeholder="Write flow here..." oninput="renderFlowCounts(); saveCurrentProject()" onscroll="syncScroll()"></textarea></div>
                 <div class="sidebar-right"><div id="flow-counts-sidebar"><div id="flow-counts"></div></div></div>
             </div>
         </div>
+        <div id="music-player-container" style="width:76%; margin-top:-1100px;  min-height: 250px;"></div>
         <audio id="aud" controls style="display:none; width:100%; margin-top:10px;"></audio>
     </div>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
-        const CLIENT_ID = "84269004246-gl2gvfsc0m8ql9kqraak3tliefltv9b2.apps.googleusercontent.com";
-        let accessToken = null, hideTimeout;
+        const CLIENT_ID = "84269004246-gl2gvfsc0m8ql9kqraak3tliefltv9b2.apps.googleusercontent.com"; 
+        let accessToken = null;
+        let projects = [];
+        let currentProjId = null;
+        let hideTimeout;
+        let editingProjId = null; 
+        let scWidget = null;
 
-        // --- GOOGLE DRIVE SYNC LOGIC ---
+        function initApp() {
+            // LOAD THEME
+            const isDark = localStorage.getItem('rap_theme') === 'dark';
+            if(isDark) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeCheckbox').checked = true;
+            }
+
+            const stored = localStorage.getItem('rap_projects_v54'); 
+            if (stored) {
+                projects = JSON.parse(stored);
+                currentProjId = parseInt(localStorage.getItem('rap_active_id_v54'));
+                if (!projects.find(p => p.id === currentProjId) && projects.length > 0) currentProjId = projects[0].id;
+            }
+            if (projects.length === 0) createDefaultProject();
+            renderProjectList();
+            loadProjectToUI();
+            updateVolUI(100); updateSpeedUI(1.0); startHide();
+        }
+
+        // --- DARK MODE LOGIC ---
+        function toggleTheme() {
+            const isChecked = document.getElementById('themeCheckbox').checked;
+            if(isChecked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('rap_theme', 'dark');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('rap_theme', 'light');
+            }
+        }
+
+        // --- HISTORY LOGIC ---
+        function addToHistory(url) {
+            let history = JSON.parse(localStorage.getItem('rap_music_history') || '[]');
+            history = history.filter(u => u !== url); 
+            history.unshift(url); 
+            if(history.length > 5) history.pop(); 
+            localStorage.setItem('rap_music_history', JSON.stringify(history));
+        }
+
+        function showHistory() {
+            const history = JSON.parse(localStorage.getItem('rap_music_history') || '[]');
+            const list = document.getElementById('historyList');
+            if (history.length === 0) return;
+            list.innerHTML = history.map(url => `<div class="history-item" onclick="selectHistory('${url}')">${url}</div>`).join('');
+            list.classList.add('show');
+            clearTimeout(hideTimeout);
+        }
+        function hideHistory() { setTimeout(() => { document.getElementById('historyList').classList.remove('show'); startHide(); }, 200); }
+        function selectHistory(url) { document.getElementById('musicUrl').value = url; loadMusic(); }
+
+        // --- PROJECT LOGIC ---
+        function openNewModal() {
+            editingProjId = null; 
+            document.getElementById('modalTitle').innerText = "New Track Name";
+            document.getElementById('modalSubmitBtn').innerText = "Create";
+            document.getElementById('newProjectName').value = "";
+            document.getElementById('nameModal').classList.add('show');
+            document.getElementById('newProjectName').focus();
+        }
+
+        function openRenameModal(e, id) {
+            e.stopPropagation(); 
+            editingProjId = id; 
+            const p = projects.find(item => item.id === id);
+            if (p) {
+                document.getElementById('modalTitle').innerText = "Rename Track";
+                document.getElementById('modalSubmitBtn').innerText = "Save";
+                document.getElementById('newProjectName').value = p.name;
+                document.getElementById('nameModal').classList.add('show');
+                document.getElementById('newProjectName').focus();
+            }
+        }
+
+        function closeModal() { document.getElementById('nameModal').classList.remove('show'); }
+        function handleModalSubmit() {
+            const name = document.getElementById('newProjectName').value.trim();
+            if (!name) return;
+            if (editingProjId) {
+                const p = projects.find(item => item.id === editingProjId);
+                if (p) { p.name = name; saveAll(); renderProjectList(); }
+            } else {
+                const newProj = { id: Date.now(), name: name, lyric: "", flow: "", note: "", target: 16 };
+                projects.unshift(newProj); currentProjId = newProj.id; saveAll(); renderProjectList(); loadProjectToUI();
+            }
+            closeModal();
+        }
+        function handleEnter(e) { if(e.key === 'Enter') handleModalSubmit(); }
+        function createDefaultProject() {
+            const newProj = { id: Date.now(), name: "First Track", lyric: "", flow: "", note: "Let's cook!", target: 16 };
+            projects.push(newProj); currentProjId = newProj.id; saveAll();
+        }
+        function switchProject(id) { currentProjId = id; saveAll(); renderProjectList(); loadProjectToUI(); }
+        
+        // --- DELETE FIX: Dùng e.stopPropagation() và confirm chắc chắn ---
+        function deleteProject(e, id) {
+            e.stopPropagation(); // Chặn sự kiện click lan ra ngoài (không mở bài hát)
+            if(confirm("Are you sure you want to delete this project?")) {
+                projects = projects.filter(p => p.id !== id);
+                if (projects.length === 0) createDefaultProject(); else if (currentProjId === id) currentProjId = projects[0].id;
+                saveAll(); renderProjectList(); loadProjectToUI();
+            }
+        }
+
+        function renderProjectList() {
+            const list = document.getElementById('projectList');
+            list.innerHTML = projects.map(p => `
+                <div class="project-item ${p.id === currentProjId ? 'active' : ''}" onclick="switchProject(${p.id})">
+                    <span class="project-name">${p.name}</span>
+                    <div class="item-actions">
+                        <button class="btn-icon btn-edit" onclick="openRenameModal(event, ${p.id})">✎</button>
+                        <button class="btn-icon btn-delete" onclick="deleteProject(event, ${p.id})">✕</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        function loadProjectToUI() {
+            const p = projects.find(item => item.id === currentProjId);
+            if (!p) return;
+            document.getElementById('lyric-editor').value = p.lyric || '';
+            document.getElementById('flow-editor').value = p.flow || '';
+            document.getElementById('note-editor').innerHTML = p.note || '';
+            document.getElementById('target').value = p.target || 10;
+            updateRemaining(); renderFlowCounts();
+        }
+        function saveCurrentProject() {
+            const p = projects.find(item => item.id === currentProjId);
+            if (p) {
+                p.lyric = document.getElementById('lyric-editor').value;
+                p.flow = document.getElementById('flow-editor').value;
+                p.note = document.getElementById('note-editor').innerHTML;
+                p.target = document.getElementById('target').value;
+                updateRemaining(); saveAll();
+            }
+        }
+        function saveAll() {
+            localStorage.setItem('rap_projects_v54', JSON.stringify(projects));
+            localStorage.setItem('rap_active_id_v54', currentProjId);
+            if (accessToken) syncToDrive();
+        }
+        
+        function loadMusic() {
+            const url = document.getElementById('musicUrl').value.trim();
+            const container = document.getElementById('music-player-container');
+            const aud = document.getElementById('aud');
+            container.innerHTML = ''; aud.style.display = 'none'; aud.pause();
+            scWidget = null; 
+
+            if (!url) return;
+            addToHistory(url);
+
+            if (url.includes('soundcloud.com')) {
+                const iframe = document.createElement('iframe');
+                iframe.id = 'sc-player';
+                iframe.width = "100%"; iframe.height = "300"; iframe.scrolling = "no"; iframe.frameBorder = "no"; iframe.allow = "autoplay";
+                iframe.src = `https://w.soundcloud.com/player/?url=${encodeURIComponent(url)}&color=%23c18c5d&auto_play=true&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=true`;
+                iframe.style.borderRadius = "15px"; iframe.style.boxShadow = "inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect)";
+                container.appendChild(iframe);
+                scWidget = SC.Widget(iframe);
+            } else if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                let videoId = '';
+                if (url.includes('youtu.be')) videoId = url.split('/').pop().split('?')[0];
+                else if (url.includes('v=')) videoId = url.split('v=')[1]?.split('&')[0];
+                else if (url.includes('embed/')) videoId = url.split('embed/')[1]?.split('?')[0];
+                if (videoId) {
+                    const embed = document.createElement('iframe');
+                    embed.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&playsinline=1`;
+                    embed.width = "100%"; embed.height = "150"; embed.allow = "autoplay; encrypted-media";
+                    embed.style.border = "none"; embed.style.borderRadius = "15px"; embed.style.boxShadow = "inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect)";
+                    container.appendChild(embed);
+                }
+            } else {
+                aud.src = url; aud.style.display = 'block'; aud.play().catch(e => alert("Link lỗi"));
+            }
+        }
+
         function handleAuth() {
             const client = google.accounts.oauth2.initTokenClient({
-                client_id: CLIENT_ID,
-                scope: 'https://www.googleapis.com/auth/drive.file',
-                callback: (tokenResponse) => {
-                    if (tokenResponse.access_token) {
-                        accessToken = tokenResponse.access_token;
-                        document.getElementById('authStatus').innerText = "Online";
-                        document.getElementById('loginBtn').classList.add('online');
-                        saveToDrive(); // Đồng bộ lần đầu khi login
-                    }
+                client_id: CLIENT_ID, scope: 'https://www.googleapis.com/auth/drive.file',
+                callback: (res) => {
+                    if (res.access_token) { accessToken = res.access_token; document.getElementById('authStatus').innerText = "ONLINE"; document.getElementById('loginBtn').classList.add('online'); syncToDrive(); }
                 },
             });
             client.requestAccessToken();
         }
-
-        async function saveToDrive() {
+        function syncToDrive() {
             if (!accessToken) return;
-            const content = localStorage.getItem('rapStudioData');
-            const metadata = { name: 'rap_studio_backup.json', mimeType: 'application/json' };
+            const content = JSON.stringify({ projects: projects, activeId: currentProjId });
+            const metadata = { name: 'rap_studio_v54_data.json', mimeType: 'application/json' };
             const form = new FormData();
             form.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
             form.append('file', new Blob([content], { type: 'application/json' }));
-
-            fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + accessToken },
-                body: form
-            }).then(res => console.log("Synced to Drive"));
+            fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart', { method: 'POST', headers: { 'Authorization': 'Bearer ' + accessToken }, body: form });
         }
-
-        // --- BASELINE v48.0 CORE LOGIC ---
-        function autoSave() {
-            const data = {
-                lyric: document.getElementById('lyric-editor').value,
-                flow: document.getElementById('flow-editor').value,
-                note: document.getElementById('note-editor').innerHTML,
-                target: document.getElementById('target').value
-            };
-            localStorage.setItem('rapStudioData', JSON.stringify(data));
-            updateRemaining();
-            if (accessToken) saveToDrive(); // Tự động đẩy lên Drive mỗi khi gõ
+        
+        function startHide() { 
+            clearTimeout(hideTimeout); 
+            if (document.activeElement === document.getElementById('musicUrl')) return;
+            hideTimeout = setTimeout(() => { document.getElementById('stealthBar').classList.remove('active'); }, 5000); 
         }
-
-        function loadLocal() {
-            const s = localStorage.getItem('rapStudioData');
-            if(s) {
-                const d = JSON.parse(s);
-                document.getElementById('lyric-editor').value = d.lyric||'';
-                document.getElementById('flow-editor').value = d.flow||'';
-                document.getElementById('note-editor').innerHTML = d.note||'';
-                document.getElementById('target').value = d.target||10;
-            }
-            updateRemaining();
-        }
-
-        function startHide() { clearTimeout(hideTimeout); hideTimeout = setTimeout(() => { document.getElementById('stealthBar').classList.remove('active'); }, 5000); }
         document.getElementById('stealthZone').onmouseenter = () => { clearTimeout(hideTimeout); document.getElementById('stealthBar').classList.add('active'); };
         document.getElementById('stealthZone').onmouseleave = startHide;
-
+        
         function updateSpeedUI(v) { document.getElementById('speedVal').innerText = v + 'x'; document.getElementById('speedFill').style.transform = `scaleY(${(v-0.5)/1.5})`; document.getElementById('aud').playbackRate = v; }
-        function updateVolUI(v) { document.getElementById('volVal').innerText = v + '%'; document.getElementById('volFill').style.transform = `scaleY(${v/100})`; document.getElementById('aud').volume = v/100; }
+        function updateVolUI(v) { 
+            document.getElementById('volVal').innerText = v + '%'; 
+            document.getElementById('volFill').style.transform = `scaleY(${v/100})`; 
+            document.getElementById('aud').volume = v/100;
+            if (scWidget) scWidget.setVolume(v);
+        }
+
         function getWords(t) { return t ? t.trim().split(/\s+/).filter(w => w.length > 0).length : 0; }
         function switchTab(t) {
             document.getElementById('lyric-view').classList.toggle('hidden', t!=='lyric');
             document.getElementById('flow-view').classList.toggle('hidden', t!=='flow');
-            document.getElementById('btnLyric').classList.add('active'); document.getElementById('btnFlow').classList.remove('active');
-            if(t==='flow') { renderFlowCounts(); document.getElementById('btnFlow').classList.add('active'); document.getElementById('btnLyric').classList.remove('active'); }
+            document.getElementById('btnLyric').classList.toggle('active', t==='lyric');
+            document.getElementById('btnFlow').classList.toggle('active', t==='flow');
+            if(t==='flow') renderFlowCounts();
         }
         function renderFlowCounts() { const lines = document.getElementById('flow-editor').value.split('\n'); document.getElementById('flow-counts').innerHTML = lines.map(l => `<div class="flow-chip-wrapper"><div class="flow-number-chip">${getWords(l)||''}</div></div>`).join(''); }
         function syncScroll() { document.getElementById('flow-counts-sidebar').scrollTop = document.getElementById('flow-editor').scrollTop; }
         function updateRemaining() { const rem = document.getElementById('target').value - getWords(document.getElementById('lyric-editor').value); document.getElementById('result').innerText = rem; }
-        function handleFile(f) { document.getElementById('aud').src = URL.createObjectURL(f); document.getElementById('aud').style.display='block'; document.getElementById('aud').play(); }
-        
-        window.onload = () => { loadLocal(); updateVolUI(100); updateSpeedUI(1.0); startHide(); };
+        function handleFile(f) { const aud = document.getElementById('aud'); document.getElementById('music-player-container').innerHTML = ''; aud.src = URL.createObjectURL(f); aud.style.display='block'; aud.play(); }
+        window.onload = initApp;
     </script>
 </body>
 </html>
