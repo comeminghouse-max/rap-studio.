@@ -77,19 +77,19 @@
         .pill-value { font-size: 12px; font-weight: bold; } .pill-label { font-size: 10px; opacity: 0.7; margin-top: 5px; }
 
         .main-container { flex: 1; display: flex; flex-direction: column; padding: 20px; box-sizing: border-box; gap: 15px; position: relative; }
-        .editor-layout { display: grid; grid-template-columns: 1fr 220px; gap: 20px; height: 45%; min-height: 250px; }
-        .editor-container-block { background: var(--bg-main); border-radius: 20px; padding: 10px; box-shadow: 8px 8px 16px var(--dark-shadow); display: flex; flex-direction: column; transition: background-color 0.3s; }
+        .editor-layout { display: grid; grid-template-columns: 1fr 220px; gap: 20px; height: 40%; min-height: 250px; }
+        .editor-container-block { background: var(--bg-main); border-radius: 20px; padding: 10px; box-shadow: 8px 8px 16px var(--dark-shadow); display: flex; flex-direction: column; transition: background-color 0.3s; margin-top: 50px;margin-bottom: 50px}
         textarea { background: var(--bg-main) !important; border: none !important; color: var(--text-main); padding: 20px; font-size: 22px; border-radius: 15px; resize: none; outline: none !important; line-height: 1.7; font-family: 'Times New Roman', serif; box-shadow: inset 6px 6px 10px var(--dark-shadow) !important; flex-grow: 1; transition: background-color 0.3s, color 0.3s; }
         
         #lyric-editor, #flow-editor { -ms-overflow-style: none; scrollbar-width: none; }
         #lyric-editor::-webkit-scrollbar, #flow-editor::-webkit-scrollbar { display: none; }
 
         .note-section { display: flex; flex-direction: column; background: var(--bg-main); border-radius: 25px; padding: 15px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); overflow: hidden; gap: 10px; transition: background-color 0.3s; margin-top: 20px; width: 100%; box-sizing: border-box; flex-grow: 1; min-height: 500px; }
-        .sidebar-right { background: var(--bg-main); border-radius: 25px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; padding: 30px 10px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect); }
-        .counter-group { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+        .sidebar-right { background: var(--bg-main); border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px;; padding: 15px 10px; box-shadow: 8px 8px 16px var(--dark-shadow), -8px -8px 16px var(--light-reflect);margin-top: 50px; margin-bottom: 50px;}
+        .counter-group { display: flex; flex-direction: column; align-items: center; gap: 5px; }
         .counter-label { font-size: 11px; font-weight: bold; letter-spacing: 2px; color: var(--text-main); opacity: 0.8; }
-        .counter-box-inset { background: var(--bg-main); border-radius: 12px; padding: 5px 12px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
-        #target { width: 60px; background: transparent; border: none; text-align: center; font-size: 24px; font-weight: bold; color: var(--accent-warm); outline: none; font-family: 'Times New Roman', serif; }
+        .counter-box-inset { background: var(--bg-main); border-radius: 12px; padding: 2px 8px; box-shadow: inset 4px 4px 8px var(--dark-shadow), inset -4px -4px 8px var(--light-reflect); }
+        #target { width: 40px; background: transparent; border: none; text-align: center; font-size: 24px; font-weight: bold; color: var(--accent-warm); outline: none; font-family: 'Times New Roman', serif; }
         .count-val-raised { font-size: 72px; font-weight: 900; color: var(--accent-warm); font-family: 'Times New Roman', serif; text-shadow: 3px 3px 6px var(--dark-shadow), -2px -2px 4px var(--light-reflect); }
         .note-toolbar { display: flex; gap: 10px; padding: 10px; background: var(--bg-main); border-radius: 15px; box-shadow: inset 3px 3px 6px var(--dark-shadow); justify-content: center; }
         #note-editor { flex: 1; outline: none; padding: 20px; overflow-y: auto; background: var(--bg-main); border-radius: 15px; box-shadow: inset 4px 4px 8px var(--dark-shadow); color: var(--text-main); }
